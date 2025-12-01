@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибербезопасность: Защити себя в цифровом мире</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-bottom: 5px solid #00bcd4;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background-color: #3949ab;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav ul li {
+            margin: 0 15px;
+        }
+        
+        .nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav ul li a:hover {
+            background-color: #00bcd4;
+        }
+        
+        .section {
+            padding: 60px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section:nth-child(even) {
+            background-color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #1a237e;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: #00bcd4;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 25px;
+        }
+        
+        .card h3 {
+            color: #1a237e;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .card p {
+            color: #000;
+            margin-bottom: 15px;
+        }
+        
+        .danger {
+            color: #f44336;
+            font-weight: bold;
+        }
+        
+        .tip {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .warning {
+            background-color: #f5f5f5;
+            border-left: 5px solid red;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .tip-box {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .quiz-question {
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .quiz-options {
+            margin-bottom: 20px;
+        }
+        
+        .quiz-option {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .quiz-result {
+            font-weight: bold;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .correct {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .incorrect {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            padding: 12px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .resources-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .resources-list li a {
+            color: #3949ab;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .resources-list li a:hover {
+            color: #00bcd4;
+            text-decoration: underline;
+        }
+        
+        .resources-list li i {
+            margin-right: 10px;
+            color: #00bcd4;
+        }
+        
+        footer {
+            background-color: #1a237e;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin: 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: #00bcd4;
+        }
+        
+        .copyright {
+            padding-top: 20px;
+            border-top: 1px solid #3949ab;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #00bcd4;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #0097a7;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav ul li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> Кибербезопасность</h1>
+            <p>Воспитательное мероприятие по безопасному поведению в цифровом пространстве</p>
+            <p>Узнайте, как защитить себя, свои данные и устройства от киберугроз</p>
+        </div>
+    </header>
+    
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="#threats"><i class="fas fa-exclamation-triangle"></i> Угрозы</a></li>
+                <li><a href="#protection"><i class="fas fa-user-shield"></i> Защита</a></li>
+                <li><a href="#passwords"><i class="fas fa-key"></i> Пароли</a></li>
+                <li><a href="#social"><i class="fas fa-users"></i> Соцсети</a></li>
+                <li><a href="#quiz"><i class="fas fa-brain"></i> Викторина</a></li>
+                <li><a href="#resources"><i class="fas fa-link"></i> Ресурсы</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section id="threats" class="section">
+        <div class="container">
+            <h2 class="section-title">Киберугрозы в современном мире</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <img src="https://avatars.mds.yandex.net/i?id=e3166e47d1e43d7738628fdfe9c8a3a2_l-8261187-images-thumbs&n=13" alt="Фишинг" class="card-img">
+                    <div class="card-content">
+                        <h3>Фишинг</h3>
+                        <p>Мошеннические письма, сообщения и сайты, которые маскируются под легитимные, чтобы получить доступ к вашим личным данным.</p>
+                        <div class="warning">
+                            <p class="danger">Опасность: </p>
+                            <p>Злоумышленники могут получить доступ к вашим банковским счетам, учетным записям в соцсетях и другой конфиденциальной информации.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://avatars.mds.yandex.net/i?id=ac501d5d3479a26e17bec3d760ecfbc5_l-5338518-images-thumbs&n=13" alt="Вредоносное ПО" class="card-img">
+                    <div class="card-content">
+                        <h3>Вредоносное ПО</h3>
+                        <p>Вирусы, трояны, шпионские программы и ransomware, которые могут повредить ваше устройство или украсть данные.</p>
+                        <div class="warning">
+                            <p class="danger">Опасность: </p>
+                            <p>Потеря данных, кража личной информации, повреждение системы, шифрование файлов с требованием выкупа.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://cdnstatic.rg.ru/uploads/images/2023/06/20/14p_pers_dannye_0c0.jpg" alt="Кража личных данных" class="card-img">
+                    <div class="card-content">
+                        <h3>Кража личных данных</h3>
+                        <p>Использование вашей персональной информации без разрешения для совершения мошеннических действий.</p>
+                        <div class="warning">
+                            <p class="danger">Опасность: </p>
+                            <p>Мошенники могут брать кредиты на ваше имя, совершать покупки или представляться вами в интернете.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="protection" class="section">
+        <div class="container">
+            <h2 class="section-title">Как защитить себя</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <img src="https://avatars.mds.yandex.net/i?id=686e2f62ffaae0dba7a741c3b27892fb_l-5018134-images-thumbs&n=13" alt="Антивирус" class="card-img">
+                    <div class="card-content">
+                        <h3>Используйте антивирусное ПО</h3>
+                        <p>Установите надежную антивирусную программу и регулярно обновляйте ее.</p>
+                        <div class="tip-box">
+                            <p class="tip">Совет: </p>
+                            <p>Включайте автоматическое обновление антивируса и регулярно проводите полное сканирование системы.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://static.vecteezy.com/system/resources/previews/005/012/902/non_2x/set-of-software-update-on-cyberspace-loading-process-concept-upgrade-application-progress-icons-vector.jpg" alt="Обновление ПО" class="card-img">
+                    <div class="card-content">
+                        <h3>Обновляйте программное обеспечение</h3>
+                        <p>Регулярно устанавливайте обновления для операционной системы и всех приложений.</p>
+                        <div class="tip-box">
+                            <p class="tip">Совет: </p>
+                            <p>Включите автоматические обновления, чтобы закрывать уязвимости безопасности как можно быстрее.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://miridium.ru/wp-content/uploads/2025/08/rez_kop_dan.jpg" alt="Резервное копирование" class="card-img">
+                    <div class="card-content">
+                        <h3>Делайте резервные копии</h3>
+                        <p>Регулярно создавайте копии важных файлов на внешних носителях или в облачных хранилищах.</p>
+                        <div class="tip-box">
+                            <p class="tip">Совет: </p>
+                            <p>Используйте правило 3-2-1: 3 копии данных, на 2 разных типах носителей, 1 копия хранится в другом месте.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="passwords" class="section">
+        <div class="container">
+            <h2 class="section-title">Безопасные пароли</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3><i class="fas fa-check-circle"></i> Правила создания надежных паролей</h3>
+                        <ul>
+                            <li>Используйте не менее 12 символов</li>
+                            <li>Комбинируйте буквы (заглавные и строчные), цифры и специальные символы</li>
+                            <li>Не используйте личную информацию (даты рождения, имена)</li>
+                            <li>Не используйте одинаковые пароли для разных сервисов</li>
+                            <li>Рассмотрите использование менеджера паролей</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3><i class="fas fa-times-circle"></i> Чего следует избегать</h3>
+                        <ul>
+                            <li>Простых последовательностей (123456, qwerty)</li>
+                            <li>Паролей, связанных с вашей личной жизнью</li>
+                            <li>Хранения паролей в браузере</li>
+                            <li>Пересылки паролей в мессенджерах или по email</li>
+                            <li>Использования одного пароля для всех аккаунтов</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box" style="margin-top: 30px;">
+                <p class="tip">Дополнительная защита: </p>
+                <p>Включите двухфакторную аутентификацию (2FA) везде, где это возможно. Это добавит второй уровень безопасности к вашим учетным записям.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="social" class="section">
+        <div class="container">
+            <h2 class="section-title">Безопасность в социальных сетях</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <img src="https://circuit-magazine.com/wp-content/uploads/2021/09/cyberSecurity.jpg" alt="Настройки приватности" class="card-img">
+                    <div class="card-content">
+                        <h3>Настройки приватности</h3>
+                        <p>Регулярно проверяйте и настраивайте параметры конфиденциальности в социальных сетях.</p>
+                        <p>Ограничьте круг лиц, которые могут видеть ваши публикации и личную информацию.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://news.harvard.edu/wp-content/uploads/2019/03/11530056.jpg?resize=1680" alt="Осторожность с контентом" class="card-img">
+                    <div class="card-content">
+                        <h3>Будьте осторожны с контентом</h3>
+                        <p>Не публикуйте личную информацию: адрес, телефон, финансовые данные.</p>
+                        <p>Помните, что удаленная информация может быть сохранена другими пользователями.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning" style="margin-top: 30px;">
+                <p class="danger">Важно: </p>
+                <p>Не добавляйте в друзья незнакомых людей и не переходите по подозрительным ссылкам, даже если они пришли от друзей.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="quiz" class="section">
+        <div class="container">
+            <h2 class="section-title">Проверьте свои знания</h2>
+            <div class="quiz-container">
+                <div class="quiz-question" id="question1">1. Что такое фишинг?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(1, 'a)')">a) Вид рыбалки</div>
+                    <div class="quiz-option" onclick="checkAnswer(1, 'b)')">b) Мошенническая техника для получения личных данных</div>
+                    <div class="quiz-option" onclick="checkAnswer(1, 'c)')">c) Вид компьютерного вируса</div>
+                </div>
+                <div id="result1" class="quiz-result"></div>
+                
+                <div class="quiz-question" id="question2">2. Какой пароль является наиболее безопасным?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(2, 'a)')">a) 123456</div>
+                    <div class="quiz-option" onclick="checkAnswer(2, 'b)')">b) password</div>
+                    <div class="quiz-option" onclick="checkAnswer(2, 'c)')">c) Xy8!pL2$qW9*</div>
+                </div>
+                <div id="result2" class="quiz-result"></div>
+                
+                <div class="quiz-question" id="question3">3. Что следует делать, если вы получили подозрительное письмо с просьбой перейти по ссылке?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(3, 'a)')">a) Немедленно перейти по ссылке</div>
+                    <div class="quiz-option" onclick="checkAnswer(3, 'b)')">b) Удалить письмо, не переходя по ссылке</div>
+                    <div class="quiz-option" onclick="checkAnswer(3, 'c)')">c) Переслать письмо друзьям</div>
+                </div>
+                <div id="result3" class="quiz-result"></div>
+                
+                <button class="btn" onclick="showAllAnswers()" style="margin-top: 20px;">Показать все ответы</button>
+            </div>
+        </div>
+    </section>
+    
+    <section id="resources" class="section">
+        <div class="container">
+            <h2 class="section-title">Полезные ресурсы</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3><i class="fas fa-external-link-alt"></i> Дополнительные материалы</h3>
+                        <ul class="resources-list">
+                            <li><a href="https://www.kaspersky.ru/resource-center" target="_blank"><i class="fas fa-book"></i> Ресурсный центр Касперского</a></li>
+                            <li><a href="https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C" target="_blank"><i class="fas fa-laptop-code"></i> Информационная безопасность (Википедия)</a></li>
+                            <li><a href="https://edu.gov.by/news/informatsionnaya-bezopasnost-detey-pamyatka-dlya-roditeley/" target="_blank"><i class="fas fa-shield-alt"></i> Памятка для родителей (Беларусь)</a></li>
+                            <li><a href="https://polotsk.vitebsk-region.gov.by/ru/novosti/novosti-regiona/item/15540-otvetstvennost-za-moshennichestvo-v-sotsialnykh-setyakh" target="_blank"><i class="fas fa-child"></i> Ответственность за мошенничество в социальных сетях</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3><i class="fas fa-tools"></i> Инструменты безопасности</h3>
+                        <ul class="resources-list">
+                            <li><a href="https://haveibeenpwned.com/" target="_blank"><i class="fas fa-search"></i> Проверка утечек данных</a></li>
+                            <li><a href="https://2ip.ru/passcheck/" target="_blank"><i class="fas fa-key"></i> Проверка пароля на стойкость</a></li>
+                            <li><a href="https://www.virustotal.com/gui/" target="_blank"><i class="fas fa-virus"></i> Проверка файлов на вирусы</a></li>
+                            <li><a href="https://www.comss.ru/page.php?id=16639" target="_blank"><i class="fas fa-user-lock"></i> Лучший антивирус 2025 (тестирование издания)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>О мероприятии</h3>
+                    <p>Воспитательное мероприятие по кибербезопасности предназначено для повышения осведомленности о цифровых угрозах и методах защиты.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <p>Для вопросов и дополнительной информации:</p>
+                    <p>accfor.onlyme@gmail.com</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Будьте в безопасности!</h3>
+                    <p>Помните: ваша цифровая безопасность начинается с вас самих. Будьте бдительны и осторожны в интернете.</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>2025 Воспитательное мероприятие по кибербезопасности. Все права защищены.</p>
+                <p>&copy;LIQALRT86</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Плавная прокрутка к разделам
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Проверка ответов в викторине
+        function checkAnswer(questionNum, selectedOption) {
+            const correctAnswers = {
+                1: 'b)',
+                2: 'c)',
+                3: 'b)'
+            };
+            
+            const resultElement = document.getElementById(`result${questionNum}`);
+            
+            if(selectedOption === correctAnswers[questionNum]) {
+                resultElement.textContent = 'Правильно!';
+                resultElement.className = 'quiz-result correct';
+                resultElement.style.display = 'block';
+            } else {
+                resultElement.textContent = 'Неверно. Попробуйте еще раз.';
+                resultElement.className = 'quiz-result incorrect';
+                resultElement.style.display = 'block';
+            }
+        }
+        
+        // Показать все ответы
+        function showAllAnswers() {
+            const correctAnswers = {
+                1: 'b) Мошенническая техника для получения личных данных',
+                2: 'c) Xy8!pL2$qW9* (длинный пароль с разными типами символов)',
+                3: 'b) Удалить письмо, не переходя по ссылке'
+            };
+            
+            for(let i = 1; i <= 3; i++) {
+                const resultElement = document.getElementById(`result${i}`);
+                resultElement.textContent = `Правильный ответ: ${correctAnswers[i]}`;
+                resultElement.className = 'quiz-result correct';
+                resultElement.style.display = 'block';
+            }
+        }
+        
+        // Подсветка активного раздела в навигации при прокрутке
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav a');
+            
+            let currentSectionId = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if(window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    currentSectionId = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.backgroundColor = '';
+                if(link.getAttribute('href') === currentSectionId) {
+                    link.style.backgroundColor = '#00bcd4';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
