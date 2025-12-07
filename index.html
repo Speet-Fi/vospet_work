@@ -6,17 +6,76 @@
     <title>Кибербезопасность: Защити себя в цифровом мире</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            /* Светлая тема (по умолчанию) */
+            --primary-color: #1a237e;
+            --secondary-color: #3949ab;
+            --accent-color: #00bcd4;
+            --danger-color: #f44336;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-light: #666666;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.15);
+            
+            --header-gradient: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            --nav-bg: #3949ab;
+            --footer-bg: #1a237e;
+            
+            --modal-overlay: rgba(0, 0, 0, 0.7);
+        }
+        
+        [data-theme="dark"] {
+            /* Темная тема */
+            --primary-color: #fff;
+            --secondary-color: #1e293b;
+            --accent-color: #00bcd4;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            
+            --bg-color: #0f172a;
+            --card-bg: #10161f;
+            --text-color: #f1f5f9;
+            --text-light: #cbd5e1;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(0, 0, 0, 0.5);
+            
+            --header-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --nav-bg: #1e293b;
+            --footer-bg: #0f172a;
+            
+            --modal-overlay: rgba(0, 0, 0, 0.85);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
+            padding-top: 70px; /* Отступ для фиксированной навигации */
+        }
+        
+        body.modal-open {
+            overflow: hidden;
+        }
+        
+        .modal-open .container {
+            filter: blur(3px);
+            transition: filter 0.4s ease;
         }
         
         .container {
@@ -25,12 +84,36 @@
             padding: 0 20px;
         }
         
+        /* Прогресс-полоса */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+        
+        .progress-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background-color: var(--accent-color);
+            transition: height 0.3s ease;
+        }
+        
+        /* Заголовок */
         header {
-            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            background: var(--header-gradient);
             color: white;
             padding: 30px 0;
             text-align: center;
-            border-bottom: 5px solid #00bcd4;
+            border-bottom: 5px solid var(--accent-color);
+            margin-top: -70px;
+            padding-top: 100px;
         }
         
         header h1 {
@@ -46,53 +129,218 @@
             opacity: 0.9;
         }
         
+        /* Улучшенная навигация */
         .nav {
-            background-color: #3949ab;
-            padding: 15px 0;
-            position: sticky;
+            background-color: var(--nav-bg);
+            padding: 0;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
         }
         
-        .nav ul {
+        .nav.scrolled {
+            padding: 5px 0;
+            background-color: rgba(57, 73, 171, 0.95);
+        }
+        
+        [data-theme="dark"] .nav.scrolled {
+            background-color: rgba(30, 41, 59, 0.95);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .nav-logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-logo i {
+            color: var(--accent-color);
+        }
+        
+        .nav-menu {
+            display: flex;
             list-style: none;
-            flex-wrap: wrap;
         }
         
-        .nav ul li {
-            margin: 0 15px;
+        .nav-menu li {
+            margin: 0 5px;
+            position: relative;
         }
         
-        .nav ul li a {
+        .nav-menu li a {
             color: white;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
-            padding: 8px 15px;
+            font-size: 1rem;
+            padding: 15px 12px;
             border-radius: 4px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
         }
         
-        .nav ul li a:hover {
-            background-color: #00bcd4;
+        .nav-menu li a:hover {
+            background-color: var(--accent-color);
         }
         
+        .nav-menu li a.active {
+            background-color: var(--accent-color);
+        }
+        
+        /* Подсказки для навигации */
+        .nav-tooltip {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1001;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+        
+        .nav-menu li a:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Кнопка переключения темы */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+        
+        [data-theme="dark"] .theme-toggle .fa-sun {
+            display: block;
+        }
+        
+        [data-theme="dark"] .theme-toggle .fa-moon {
+            display: none;
+        }
+        
+        /* Бургер-меню */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1002;
+        }
+        
+        .burger-menu span {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        /* Подсказки для карточек */
+        .card-tooltip {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1001;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+        
+        .card:hover .card-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Секции */
         .section {
             padding: 60px 0;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border-color);
         }
         
         .section:nth-child(even) {
-            background-color: #fff;
+            background-color: var(--card-bg);
         }
         
         .section-title {
             text-align: center;
             margin-bottom: 50px;
-            color: #1a237e;
+            color: var(--primary-color);
             font-size: 2.2rem;
             position: relative;
         }
@@ -102,12 +350,13 @@
             position: absolute;
             width: 80px;
             height: 4px;
-            background-color: #00bcd4;
+            background-color: var(--accent-color);
             bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
         }
         
+        /* Карточки */
         .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -115,16 +364,39 @@
         }
         
         .card {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px var(--shadow-color);
             transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid var(--border-color);
         }
         
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px var(--shadow-hover);
+        }
+        
+        .card-clickable {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .card-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .card:hover .card-icon {
+            opacity: 1;
         }
         
         .card-img {
@@ -138,53 +410,323 @@
         }
         
         .card h3 {
-            color: #1a237e;
+            color: var(--primary-color);
             margin-bottom: 15px;
             font-size: 1.5rem;
         }
         
         .card p {
-            color: #000;
+            color: var(--text-color);
             margin-bottom: 15px;
         }
         
         .danger {
-            color: #f44336;
+            color: var(--danger-color);
             font-weight: bold;
         }
         
         .tip {
-            color: #4caf50;
+            color: var(--success-color);
             font-weight: bold;
         }
         
         .warning {
-            background-color: #f5f5f5;
-            border-left: 5px solid red;
+            background-color: color-mix(in srgb, var(--danger-color) 10%, transparent);
+            border-left: 5px solid var(--danger-color);
             padding: 15px;
             margin: 20px 0;
             border-radius: 0 5px 5px 0;
         }
         
         .tip-box {
-            background-color: #e8f5e9;
-            border-left: 5px solid #4caf50;
+            background-color: color-mix(in srgb, var(--success-color) 10%, transparent);
+            border-left: 5px solid var(--success-color);
             padding: 15px;
             margin: 20px 0;
             border-radius: 0 5px 5px 0;
         }
         
+        /* Модальное окно приветствия */
+        .welcome-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .welcome-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .welcome-modal-container {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: all 0.5s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .welcome-modal-overlay.active .welcome-modal-container {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .welcome-modal-header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-modal-title {
+            font-size: 2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .welcome-modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .welcome-modal-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .welcome-modal-content {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(85vh - 130px);
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 25px 0;
+        }
+        
+        .feature-list li {
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-icon {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            min-width: 30px;
+            margin-top: 2px;
+        }
+        
+        .feature-text h4 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .feature-text p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .welcome-tip {
+            background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+            border-left: 5px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+        }
+        
+        .welcome-tip p {
+            margin: 0;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        /* Обычное модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--modal-overlay);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .modal-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .modal-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 15px;
+            z-index: 1001;
+            display: none;
+            opacity: 0;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-container.active {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .modal-header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-content {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 150px);
+        }
+        
+        .modal-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-video {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 соотношение */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .modal-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .modal-nav-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+        
+        .modal-nav-btn:hover {
+            background-color: #0f172a;
+        }
+        
+        .modal-nav-btn:disabled {
+            background-color: #000;
+            cursor: not-allowed;
+        }
+        
+        /* Викторина */
         .quiz-container {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border: 1px solid var(--border-color);
         }
         
         .quiz-question {
             margin-bottom: 20px;
             font-weight: 600;
-            color: #1a237e;
+            color: var(--primary-color);
         }
         
         .quiz-options {
@@ -194,14 +736,15 @@
         .quiz-option {
             margin-bottom: 10px;
             padding: 10px;
-            background-color: #f5f5f5;
+            background-color: color-mix(in srgb, var(--bg-color) 50%, transparent);
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
+            border: 1px solid var(--border-color);
         }
         
         .quiz-option:hover {
-            background-color: #e0e0e0;
+            background-color: color-mix(in srgb, var(--accent-color) 20%, transparent);
         }
         
         .quiz-result {
@@ -213,22 +756,25 @@
         }
         
         .correct {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            background-color: color-mix(in srgb, var(--success-color) 20%, transparent);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
         }
         
         .incorrect {
-            background-color: #ffebee;
-            color: #c62828;
+            background-color: color-mix(in srgb, var(--danger-color) 20%, transparent);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
         }
         
+        /* Ресурсы */
         .resources-list {
             list-style-type: none;
         }
         
         .resources-list li {
             padding: 12px 0;
-            border-bottom: 1px dashed #ddd;
+            border-bottom: 1px dashed var(--border-color);
         }
         
         .resources-list li:last-child {
@@ -236,7 +782,7 @@
         }
         
         .resources-list li a {
-            color: #3949ab;
+            color: var(--secondary-color);
             text-decoration: none;
             font-weight: 500;
             display: flex;
@@ -244,17 +790,18 @@
         }
         
         .resources-list li a:hover {
-            color: #00bcd4;
+            color: var(--accent-color);
             text-decoration: underline;
         }
         
         .resources-list li i {
             margin-right: 10px;
-            color: #00bcd4;
+            color: var(--accent-color);
         }
         
+        /* Футер */
         footer {
-            background-color: #1a237e;
+            background-color: var(--footer-bg);
             color: white;
             padding: 40px 0;
             text-align: center;
@@ -275,19 +822,20 @@
         
         .footer-section h3 {
             margin-bottom: 20px;
-            color: #00bcd4;
+            color: var(--accent-color);
         }
         
         .copyright {
             padding-top: 20px;
-            border-top: 1px solid #3949ab;
+            border-top: 1px solid var(--secondary-color);
             font-size: 0.9rem;
             opacity: 0.8;
         }
         
+        /* Кнопки */
         .btn {
             display: inline-block;
-            background-color: #00bcd4;
+            background-color: var(--accent-color);
             color: white;
             padding: 12px 25px;
             border-radius: 5px;
@@ -299,12 +847,36 @@
         }
         
         .btn:hover {
-            background-color: #0097a7;
+            background-color: color-mix(in srgb, var(--accent-color) 80%, black);
             transform: translateY(-3px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
         
+        .welcome-btn {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+        
         @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            header {
+                margin-top: -60px;
+                padding-top: 90px;
+            }
+            
             header h1 {
                 font-size: 2rem;
             }
@@ -313,18 +885,263 @@
                 font-size: 1.8rem;
             }
             
-            .nav ul {
-                flex-direction: column;
-                align-items: center;
+            .nav-container {
+                height: 60px;
             }
             
-            .nav ul li {
+            /* Бургер-меню на мобильных */
+            .burger-menu {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: var(--nav-bg);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-menu li {
                 margin: 5px 0;
+            }
+            
+            .nav-menu li a {
+                padding: 12px 15px;
+                justify-content: center;
+            }
+            
+            /* Скрываем подсказки на мобильных */
+            .nav-tooltip,
+            .card-tooltip {
+                display: none;
+            }
+            
+            .welcome-modal-container,
+            .modal-container {
+                width: 95%;
+                max-height: 85vh;
+            }
+            
+            .welcome-modal-content,
+            .modal-content {
+                max-height: calc(85vh - 150px);
+                padding: 20px;
+            }
+            
+            .welcome-modal-header,
+            .modal-header {
+                padding: 15px 20px;
+            }
+            
+            .welcome-modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .feature-list li {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Модальное окно приветствия -->
+    <div class="welcome-modal-overlay" id="welcomeModal">
+        <div class="welcome-modal-container">
+            <div class="welcome-modal-header">
+                <h3 class="welcome-modal-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Добро пожаловать на мероприятие по кибербезопасности!
+                </h3>
+                <button class="welcome-modal-close" id="welcomeModalClose">&times;</button>
+            </div>
+            <div class="welcome-modal-content">
+                <p style="margin-bottom: 20px; font-size: 1.1rem;">
+                    Этот интерактивный сайт поможет вам узнать о киберугрозах и методах защиты в цифровом мире. 
+                    Вот краткая инструкция по использованию:
+                </p>
+                
+                <ul class="feature-list">
+                    <li>
+                        <div class="feature-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Интерактивные карточки</h4>
+                            <p>Нажимайте на любую карточку, чтобы открыть подробную информацию и обучающее видео по теме.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Темная/светлая тема</h4>
+                            <p>Переключайте тему оформления кнопкой с иконкой луны/солнца в правом углу навигации.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Адаптивная навигация</h4>
+                            <p>На мобильных устройствах используйте бургер-меню для доступа к разделам сайта.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Видеоматериалы</h4>
+                            <p>В каждой открытой карточке доступны обучающие видео для лучшего понимания темы.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Проверка знаний</h4>
+                            <p>В разделе "Викторина" вы можете проверить свои знания о кибербезопасности.</p>
+                        </div>
+                    </li>
+                </ul>
+                
+                <div class="welcome-tip">
+                    <p><i class="fas fa-lightbulb"></i> <strong>Совет:</strong> Обращайте внимание на подсказки при наведении на элементы - они помогут вам лучше ориентироваться на сайте.</p>
+                </div>
+                
+                <button class="btn welcome-btn" id="startExploringBtn">
+                    <i class="fas fa-rocket"></i> Начать изучение
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Прогресс-полоса -->
+    <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    
+    <!-- Навигация -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>Кибербезопасность</span>
+            </a>
+            
+            <button class="burger-menu" id="burgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li>
+                    <a href="#threats">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Угрозы</span>
+                        <span class="nav-tooltip">Основные киберугрозы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#protection">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Защита</span>
+                        <span class="nav-tooltip">Методы защиты</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#passwords">
+                        <i class="fas fa-key"></i>
+                        <span>Пароли</span>
+                        <span class="nav-tooltip">Безопасные пароли</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#social">
+                        <i class="fas fa-users"></i>
+                        <span>Соцсети</span>
+                        <span class="nav-tooltip">Безопасность в соцсетях</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#quiz">
+                        <i class="fas fa-brain"></i>
+                        <span>Викторина</span>
+                        <span class="nav-tooltip">Проверьте знания</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#resources">
+                        <i class="fas fa-link"></i>
+                        <span>Ресурсы</span>
+                        <span class="nav-tooltip">Полезные материалы</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#game">
+                        <i class="fa fa-trophy"></i>
+                        <span>Игра</span>
+                        <span class="nav-tooltip">Интерактивная игра</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Заголовок -->
     <header>
         <div class="container">
             <h1><i class="fas fa-shield-alt"></i> Кибербезопасность</h1>
@@ -333,56 +1150,52 @@
         </div>
     </header>
     
-    <nav class="nav">
-        <div class="container">
-            <ul>
-                <li><a href="#threats"><i class="fas fa-exclamation-triangle"></i> Угрозы</a></li>
-                <li><a href="#protection"><i class="fas fa-user-shield"></i> Защита</a></li>
-                <li><a href="#passwords"><i class="fas fa-key"></i> Пароли</a></li>
-                <li><a href="#social"><i class="fas fa-users"></i> Соцсети</a></li>
-                <li><a href="#quiz"><i class="fas fa-brain"></i> Викторина</a></li>
-                <li><a href="#resources"><i class="fas fa-link"></i> Ресурсы</a></li>
-                <li><a href="#game"><i class="fa fa-trophy"></i> Игра</a></li>
-            </ul>
-        </div>
-    </nav>
-    
+    <!-- Контент (остается без изменений) -->
     <section id="threats" class="section">
         <div class="container">
             <h2 class="section-title">Киберугрозы в современном мире</h2>
             <div class="content-grid">
-                <div class="card">
-                    <img src="https://avatars.mds.yandex.net/i?id=e3166e47d1e43d7738628fdfe9c8a3a2_l-8261187-images-thumbs&n=13" alt="Фишинг" class="card-img">
-                    <div class="card-content">
-                        <h3>Фишинг</h3>
-                        <p>Мошеннические письма, сообщения и сайты, которые маскируются под легитимные, чтобы получить доступ к вашим личным данным.</p>
-                        <div class="warning">
-                            <p class="danger">Опасность: </p>
-                            <p>Злоумышленники могут получить доступ к вашим банковским счетам, учетным записям в соцсетях и другой конфиденциальной информации.</p>
+                <div class="card" data-card-id="1">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://avatars.mds.yandex.net/i?id=e3166e47d1e43d7738628fdfe9c8a3a2_l-8261187-images-thumbs&n=13" alt="Фишинг" class="card-img">
+                        <div class="card-content">
+                            <h3>Фишинг <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Мошеннические письма, сообщения и сайты, которые маскируются под легитимные, чтобы получить доступ к вашим личным данным.</p>
+                            <div class="warning">
+                                <p class="danger">Опасность: </p>
+                                <p>Злоумышленники могут получить доступ к вашим банковским счетам, учетным записям в соцсетях и другой конфиденциальной информации.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <img src="https://avatars.mds.yandex.net/i?id=ac501d5d3479a26e17bec3d760ecfbc5_l-5338518-images-thumbs&n=13" alt="Вредоносное ПО" class="card-img">
-                    <div class="card-content">
-                        <h3>Вредоносное ПО</h3>
-                        <p>Вирусы, трояны, шпионские программы и ransomware, которые могут повредить ваше устройство или украсть данные.</p>
-                        <div class="warning">
-                            <p class="danger">Опасность: </p>
-                            <p>Потеря данных, кража личной информации, повреждение системы, шифрование файлов с требованием выкупа.</p>
+                <div class="card" data-card-id="2">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://avatars.mds.yandex.net/i?id=ac501d5d3479a26e17bec3d760ecfbc5_l-5338518-images-thumbs&n=13" alt="Вредоносное ПО" class="card-img">
+                        <div class="card-content">
+                            <h3>Вредоносное ПО <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Вирусы, трояны, шпионские программы и ransomware, которые могут повредить ваше устройство или украсть данные.</p>
+                            <div class="warning">
+                                <p class="danger">Опасность: </p>
+                                <p>Потеря данных, кража личной информации, повреждение системы, шифрование файлов с требованием выкупа.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <img src="https://cdnstatic.rg.ru/uploads/images/2023/06/20/14p_pers_dannye_0c0.jpg" alt="Кража личных данных" class="card-img">
-                    <div class="card-content">
-                        <h3>Кража личных данных</h3>
-                        <p>Использование вашей персональной информации без разрешения для совершения мошеннических действий.</p>
-                        <div class="warning">
-                            <p class="danger">Опасность: </p>
-                            <p>Мошенники могут брать кредиты на ваше имя, совершать покупки или представляться вами в интернете.</p>
+                <div class="card" data-card-id="3">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://cdnstatic.rg.ru/uploads/images/2023/06/20/14p_pers_dannye_0c0.jpg" alt="Кража личных данных" class="card-img">
+                        <div class="card-content">
+                            <h3>Кража личных данных <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Использование вашей персональной информации без разрешения для совершения мошеннических действий.</p>
+                            <div class="warning">
+                                <p class="danger">Опасность: </p>
+                                <p>Мошенники могут брать кредиты на ваше имя, совершать покупки или представляться вами в интернете.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -394,38 +1207,47 @@
         <div class="container">
             <h2 class="section-title">Как защитить себя</h2>
             <div class="content-grid">
-                <div class="card">
-                    <img src="https://avatars.mds.yandex.net/i?id=686e2f62ffaae0dba7a741c3b27892fb_l-5018134-images-thumbs&n=13" alt="Антивирус" class="card-img">
-                    <div class="card-content">
-                        <h3>Используйте антивирусное ПО</h3>
-                        <p>Установите надежную антивирусную программу и регулярно обновляйте ее.</p>
-                        <div class="tip-box">
-                            <p class="tip">Совет: </p>
-                            <p>Включайте автоматическое обновление антивируса и регулярно проводите полное сканирование системы.</p>
+                <div class="card" data-card-id="4">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://avatars.mds.yandex.net/i?id=686e2f62ffaae0dba7a741c3b27892fb_l-5018134-images-thumbs&n=13" alt="Антивирус" class="card-img">
+                        <div class="card-content">
+                            <h3>Используйте антивирусное ПО <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Установите надежную антивирусную программу и регулярно обновляйте ее.</p>
+                            <div class="tip-box">
+                                <p class="tip">Совет: </p>
+                                <p>Включайте автоматическое обновление антивируса и регулярно проводите полное сканирование системы.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <img src="https://static.vecteezy.com/system/resources/previews/005/012/902/non_2x/set-of-software-update-on-cyberspace-loading-process-concept-upgrade-application-progress-icons-vector.jpg" alt="Обновление ПО" class="card-img">
-                    <div class="card-content">
-                        <h3>Обновляйте программное обеспечение</h3>
-                        <p>Регулярно устанавливайте обновления для операционной системы и всех приложений.</p>
-                        <div class="tip-box">
-                            <p class="tip">Совет: </p>
-                            <p>Включите автоматические обновления, чтобы закрывать уязвимости безопасности как можно быстрее.</p>
+                <div class="card" data-card-id="5">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://static.vecteezy.com/system/resources/previews/005/012/902/non_2x/set-of-software-update-on-cyberspace-loading-process-concept-upgrade-application-progress-icons-vector.jpg" alt="Обновление ПО" class="card-img">
+                        <div class="card-content">
+                            <h3>Обновляйте программное обеспечение <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Регулярно устанавливайте обновления для операционной системы и всех приложений.</p>
+                            <div class="tip-box">
+                                <p class="tip">Совет: </p>
+                                <p>Включите автоматические обновления, чтобы закрывать уязвимости безопасности как можно быстрее.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <img src="https://miridium.ru/wp-content/uploads/2025/08/rez_kop_dan.jpg" alt="Резервное копирование" class="card-img">
-                    <div class="card-content">
-                        <h3>Делайте резервные копии</h3>
-                        <p>Регулярно создавайте копии важных файлов на внешних носителях или в облачных хранилищах.</p>
-                        <div class="tip-box">
-                            <p class="tip">Совет: </p>
-                            <p>Используйте правило 3-2-1: 3 копии данных, на 2 разных типах носителей, 1 копия хранится в другом месте.</p>
+                <div class="card" data-card-id="6">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://miridium.ru/wp-content/uploads/2025/08/rez_kop_dan.jpg" alt="Резервное копирование" class="card-img">
+                        <div class="card-content">
+                            <h3>Делайте резервные копии <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Регулярно создавайте копии важных файлов на внешних носителях или в облачных хранилищах.</p>
+                            <div class="tip-box">
+                                <p class="tip">Совет: </p>
+                                <p>Используйте правило 3-2-1: 3 копии данных, на 2 разных типах носителей, 1 копия хранится в другом месте.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -437,29 +1259,35 @@
         <div class="container">
             <h2 class="section-title">Безопасные пароли</h2>
             <div class="content-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3><i class="fas fa-check-circle"></i> Правила создания надежных паролей</h3>
-                        <ul>
-                            <li>Используйте не менее 12 символов</li>
-                            <li>Комбинируйте буквы (заглавные и строчные), цифры и специальные символы</li>
-                            <li>Не используйте личную информацию (даты рождения, имена)</li>
-                            <li>Не используйте одинаковые пароли для разных сервисов</li>
-                            <li>Рассмотрите использование менеджера паролей</li>
-                        </ul>
+                <div class="card" data-card-id="7">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <div class="card-content">
+                            <h3><i class="fas fa-check-circle"></i> Правила создания надежных паролей <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <ul>
+                                <li>Используйте не менее 12 символов</li>
+                                <li>Комбинируйте буквы (заглавные и строчные), цифры и специальные символы</li>
+                                <li>Не используйте личную информацию (даты рождения, имена)</li>
+                                <li>Не используйте одинаковые пароли для разных сервисов</li>
+                                <li>Рассмотрите использование менеджера паролей</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <div class="card-content">
-                        <h3><i class="fas fa-times-circle"></i> Чего следует избегать</h3>
-                        <ul>
-                            <li>Простых последовательностей (123456, qwerty)</li>
-                            <li>Паролей, связанных с вашей личной жизнью</li>
-                            <li>Хранения паролей в браузере</li>
-                            <li>Пересылки паролей в мессенджерах или по email</li>
-                            <li>Использования одного пароля для всех аккаунтов</li>
-                        </ul>
+                <div class="card" data-card-id="8">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <div class="card-content">
+                            <h3><i class="fas fa-times-circle"></i> Чего следует избегать <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <ul>
+                                <li>Простых последовательностей (123456, qwerty)</li>
+                                <li>Паролей, связанных с вашей личной жизнью</li>
+                                <li>Хранения паролей в браузере</li>
+                                <li>Пересылки паролей в мессенджерах или по email</li>
+                                <li>Использования одного пароля для всех аккаунтов</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -475,21 +1303,27 @@
         <div class="container">
             <h2 class="section-title">Безопасность в социальных сетях</h2>
             <div class="content-grid">
-                <div class="card">
-                    <img src="https://circuit-magazine.com/wp-content/uploads/2021/09/cyberSecurity.jpg" alt="Настройки приватности" class="card-img">
-                    <div class="card-content">
-                        <h3>Настройки приватности</h3>
-                        <p>Регулярно проверяйте и настраивайте параметры конфиденциальности в социальных сетях.</p>
-                        <p>Ограничьте круг лиц, которые могут видеть ваши публикации и личную информацию.</p>
+                <div class="card" data-card-id="9">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://circuit-magazine.com/wp-content/uploads/2021/09/cyberSecurity.jpg" alt="Настройки приватности" class="card-img">
+                        <div class="card-content">
+                            <h3>Настройки приватности <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Регулярно проверяйте и настраивайте параметры конфиденциальности в социальных сетях.</p>
+                            <p>Ограничьте круг лиц, которые могут видеть ваши публикации и личную информацию.</p>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <img src="https://news.harvard.edu/wp-content/uploads/2019/03/11530056.jpg?resize=1680" alt="Осторожность с контентом" class="card-img">
-                    <div class="card-content">
-                        <h3>Будьте осторожны с контентом</h3>
-                        <p>Не публикуйте личную информацию: адрес, телефон, финансовые данные.</p>
-                        <p>Помните, что удаленная информация может быть сохранена другими пользователями.</p>
+                <div class="card" data-card-id="10">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://news.harvard.edu/wp-content/uploads/2019/03/11530056.jpg?resize=1680" alt="Осторожность с контентом" class="card-img">
+                        <div class="card-content">
+                            <h3>Будьте осторожны с контентом <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Не публикуйте личную информацию: адрес, телефон, финансовые данные.</p>
+                            <p>Помните, что удаленная информация может быть сохранена другими пользователями.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -538,27 +1372,33 @@
         <div class="container">
             <h2 class="section-title">Полезные ресурсы</h2>
             <div class="content-grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3><i class="fas fa-external-link-alt"></i> Дополнительные материалы</h3>
-                        <ul class="resources-list">
-                            <li><a href="https://www.kaspersky.ru/resource-center" target="_blank"><i class="fas fa-book"></i> Ресурсный центр Касперского</a></li>
-                            <li><a href="https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C" target="_blank"><i class="fas fa-laptop-code"></i> Информационная безопасность (Википедия)</a></li>
-                            <li><a href="https://edu.gov.by/news/informatsionnaya-bezopasnost-detey-pamyatka-dlya-roditeley/" target="_blank"><i class="fas fa-shield-alt"></i> Памятка для родителей (Беларусь)</a></li>
-                            <li><a href="https://polotsk.vitebsk-region.gov.by/ru/novosti/novosti-regiona/item/15540-otvetstvennost-za-moshennichestvo-v-sotsialnykh-setyakh" target="_blank"><i class="fas fa-child"></i> Ответственность за мошенничество в социальных сетях</a></li>
-                        </ul>
+                <div class="card" data-card-id="11">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <div class="card-content">
+                            <h3><i class="fas fa-external-link-alt"></i> Дополнительные материалы <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <ul class="resources-list">
+                                <li><a href="https://www.kaspersky.ru/resource-center" target="_blank"><i class="fas fa-book"></i> Ресурсный центр Касперского</a></li>
+                                <li><a href="https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C" target="_blank"><i class="fas fa-laptop-code"></i> Информационная безопасность (Википедия)</a></li>
+                                <li><a href="https://edu.gov.by/news/informatsionnaya-bezopasnost-detey-pamyatka-dlya-roditeley/" target="_blank"><i class="fas fa-shield-alt"></i> Памятка для родителей (Беларусь)</a></li>
+                                <li><a href="https://polotsk.vitebsk-region.gov.by/ru/novosti/novosti-regiona/item/15540-otvetstvennost-za-moshennichestvo-v-sotsialnykh-setyakh" target="_blank"><i class="fas fa-child"></i> Ответственность за мошенничество в социальных сетях</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="card">
-                    <div class="card-content">
-                        <h3><i class="fas fa-tools"></i> Инструменты безопасности</h3>
-                        <ul class="resources-list">
-                            <li><a href="https://haveibeenpwned.com/" target="_blank"><i class="fas fa-search"></i> Проверка утечек данных</a></li>
-                            <li><a href="https://2ip.ru/passcheck/" target="_blank"><i class="fas fa-key"></i> Проверка пароля на стойкость</a></li>
-                            <li><a href="https://www.virustotal.com/gui/" target="_blank"><i class="fas fa-virus"></i> Проверка файлов на вирусы</a></li>
-                            <li><a href="https://www.comss.ru/page.php?id=16639" target="_blank"><i class="fas fa-user-lock"></i> Лучший антивирус 2025 (тестирование издания)</a></li>
-                        </ul>
+                <div class="card" data-card-id="12">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <div class="card-content">
+                            <h3><i class="fas fa-tools"></i> Инструменты безопасности <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <ul class="resources-list">
+                                <li><a href="https://haveibeenpwned.com/" target="_blank"><i class="fas fa-search"></i> Проверка утечек данных</a></li>
+                                <li><a href="https://2ip.ru/passcheck/" target="_blank"><i class="fas fa-key"></i> Проверка пароля на стойкость</a></li>
+                                <li><a href="https://www.virustotal.com/gui/" target="_blank"><i class="fas fa-virus"></i> Проверка файлов на вирусы</a></li>
+                                <li><a href="https://www.comss.ru/page.php?id=16639" target="_blank"><i class="fas fa-user-lock"></i> Лучший антивирус 2025 (тестирование издания)</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -569,18 +1409,23 @@
         <div class="container">
             <h2 class="section-title">Игра по мотивам мероприятия</h2>
             <div class="content-grid">
-                <div class="card">
-                    <img src="https://yt3.googleusercontent.com/g6swtn58dtwlUtR52RmWpDRU1iD6RHZEpiRsSKmmreePhLX4qezKkINxAFBSxJv25ZnTp7Uo=s900-c-k-c0x00ffffff-no-rj" alt="Игра" class="card-img">
-                    <div class="card-content">
-                        <h3>Cyber Quiz Master</h3>
-                        <p>Попробуй свои силы в игре по мотивам данного мероприятия.</p>
-                        <li><a href="https://speet-fi.github.io/Cyber-Quiz-Master/" target="_blank"><i class="fas fa-user-lock"></i> Начать игру</a></li>
-                        <div class="warning">
-                            <p class="danger">Внимание: </p>
-                            <p>Перед тем как начать играть, ознакомьтесь с содержанием воспитательного мероприятия.</p>
+                <div class="card" data-card-id="13">
+                    <div class="card-clickable">
+                        <div class="card-tooltip">Нажмите для подробностей и видео</div>
+                        <img src="https://i.pinimg.com/736x/a9/9d/40/a99d400bbcb0edf79cd26e2ca610f180.jpg" alt="Игра" class="card-img">
+                        <div class="card-content">
+                            <h3>Cyber Quiz Master <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <p>Попробуй свои силы в игре по мотивам данного мероприятия.</p>
+                            <li><a href="https://speet-fi.github.io/Cyber-Quiz-Master/" target="_blank"><i class="fas fa-user-lock"></i> Начать игру</a></li>
+                            <div class="warning">
+                                <p class="danger">Внимание: </p>
+                                <p>Перед тем как начать играть, ознакомьтесь с содержанием воспитательного мероприятия.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
     </section>
     
     <footer>
@@ -610,26 +1455,510 @@
         </div>
     </footer>
 
+    <!-- Модальное окно для карточек -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-container" id="modalContainer">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modalTitle">Заголовок</h3>
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+        <div class="modal-content" id="modalContent">
+            <!-- Контент будет загружаться динамически -->
+        </div>
+    </div>
+
     <script>
-        // Плавная прокрутка к разделам
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+        // ========== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН ==========
+        const cardData = {
+            1: {
+                title: "Фишинг",
+                image: "https://avatars.mds.yandex.net/i?id=e3166e47d1e43d7738628fdfe9c8a3a2_l-8261187-images-thumbs&n=13",
+                content: `
+                    <p>Мошеннические письма, сообщения и сайты, которые маскируются под легитимные, чтобы получить доступ к вашим личным данным.</p>
+                    <div class="warning">
+                        <p class="danger">Опасность: </p>
+                        <p>Злоумышленники могут получить доступ к вашим банковским счетам, учетным записям в соцсетях и другой конфиденциальной информации.</p>
+                    </div>
+                `,
+                videoId: "vEl13Q-QvMg",
+                icon: "fa-exclamation-triangle"
+            },
+            2: {
+                title: "Вредоносное ПО",
+                image: "https://avatars.mds.yandex.net/i?id=ac501d5d3479a26e17bec3d760ecfbc5_l-5338518-images-thumbs&n=13",
+                content: `
+                    <p>Вирусы, трояны, шпионские программы и ransomware, которые могут повредить ваше устройство или украсть данные.</p>
+                    <div class="warning">
+                        <p class="danger">Опасность: </p>
+                        <p>Потеря данных, кража личной информации, повреждение системы, шифрование файлов с требованием выкупа.</p>
+                    </div>
+                `,
+                videoId: "AtgAENlJ2Ek",
+                icon: "fa-virus"
+            },
+            3: {
+                title: "Кража личных данных",
+                image: "https://cdnstatic.rg.ru/uploads/images/2023/06/20/14p_pers_dannye_0c0.jpg",
+                content: `
+                    <p>Использование вашей персональной информации без разрешения для совершения мошеннических действий.</p>
+                    <div class="warning">
+                        <p class="danger">Опасность: </p>
+                        <p>Мошенники могут брать кредиты на ваше имя, совершать покупки или представляться вами в интернете.</p>
+                    </div>
+                `,
+                videoId: "d2XYnqOUYWU",
+                icon: "fa-user-secret"
+            },
+            4: {
+                title: "Используйте антивирусное ПО",
+                image: "https://avatars.mds.yandex.net/i?id=686e2f62ffaae0dba7a741c3b27892fb_l-5018134-images-thumbs&n=13",
+                content: `
+                    <p>Установите надежную антивирусную программу и регулярно обновляйте ее.</p>
+                    <div class="tip-box">
+                        <p class="tip">Совет: </p>
+                        <p>Включайте автоматическое обновление антивируса и регулярно проводите полное сканирование системы.</p>
+                    </div>
+                `,
+                videoId: "a7JrrNnqs70",
+                icon: "fa-shield-alt"
+            },
+            5: {
+                title: "Обновляйте программное обеспечение",
+                image: "https://static.vecteezy.com/system/resources/previews/005/012/902/non_2x/set-of-software-update-on-cyberspace-loading-process-concept-upgrade-application-progress-icons-vector.jpg",
+                content: `
+                    <p>Регулярно устанавливайте обновления для операционной системы и всех приложений.</p>
+                    <div class="tip-box">
+                        <p class="tip">Совет: </p>
+                        <p>Включите автоматические обновления, чтобы закрывать уязвимости безопасности как можно быстрее.</p>
+                    </div>
+                `,
+                videoId: "XfwnluPERhE",
+                icon: "fa-sync-alt"
+            },
+            6: {
+                title: "Делайте резервные копии",
+                image: "https://miridium.ru/wp-content/uploads/2025/08/rez_kop_dan.jpg",
+                content: `
+                    <p>Регулярно создавайте копии важных файлов на внешних носителях или в облачных хранилищах.</p>
+                    <div class="tip-box">
+                        <p class="tip">Совет: </p>
+                        <p>Используйте правило 3-2-1: 3 копии данных, на 2 разных типах носителей, 1 копия хранится в другом месте.</p>
+                    </div>
+                `,
+                videoId: "a99uIDAojwk",
+                icon: "fa-copy"
+            },
+            7: {
+                title: "Правила создания надежных паролей",
+                image: "https://cdn-icons-png.flaticon.com/512/3067/3067256.png",
+                content: `
+                    <ul>
+                        <li>Используйте не менее 12 символов</li>
+                        <li>Комбинируйте буквы (заглавные и строчные), цифры и специальные символы</li>
+                        <li>Не используйте личную информацию (даты рождения, имена)</li>
+                        <li>Не используйте одинаковые пароли для разных сервисов</li>
+                        <li>Рассмотрите использование менеджера паролей</li>
+                    </ul>
+                `,
+                videoId: "nXJR7neKkok",
+                icon: "fa-check-circle"
+            },
+            8: {
+                title: "Чего следует избегать",
+                image: "https://cdn-icons-png.flaticon.com/512/1828/1828843.png",
+                content: `
+                    <ul>
+                        <li>Простых последовательностей (123456, qwerty)</li>
+                        <li>Паролей, связанных с вашей личной жизнью</li>
+                        <li>Хранения паролей в браузере</li>
+                        <li>Пересылки паролей в мессенджерах или по email</li>
+                        <li>Использования одного пароля для всех аккаунтов</li>
+                    </ul>
+                `,
+                videoId: "nXJR7neKkok",
+                icon: "fa-times-circle"
+            },
+            9: {
+                title: "Настройки приватности",
+                image: "https://circuit-magazine.com/wp-content/uploads/2021/09/cyberSecurity.jpg",
+                content: `
+                    <p>Регулярно проверяйте и настраивайте параметры конфиденциальности в социальных сетях.</p>
+                    <p>Ограничьте круг лиц, которые могут видеть ваши публикации и личную информацию.</p>
+                `,
+                videoId: "25sRb0Lmk4I",
+                icon: "fa-lock"
+            },
+            10: {
+                title: "Будьте осторожны с контентом",
+                image: "https://news.harvard.edu/wp-content/uploads/2019/03/11530056.jpg?resize=1680",
+                content: `
+                    <p>Не публикуйте личную информацию: адрес, телефон, финансовые данные.</p>
+                    <p>Помните, что удаленная информация может быть сохранена другими пользователями.</p>
+                `,
+                videoId: "lJFdTRD1DiI",
+                icon: "fa-eye-slash"
+            },
+            11: {
+                title: "Дополнительные материалы",
+                image: "https://cdn-icons-png.flaticon.com/512/2092/2092655.png",
+                content: `
+                    <p>Полезные ресурсы для углубленного изучения кибербезопасности:</p>
+                    <ul class="resources-list">
+                        <li><a href="https://www.kaspersky.ru/resource-center" target="_blank"><i class="fas fa-book"></i> Ресурсный центр Касперского</a></li>
+                        <li><a href="https://ru.wikipedia.org/wiki/%D0%98%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C" target="_blank"><i class="fas fa-laptop-code"></i> Информационная безопасность (Википедия)</a></li>
+                        <li><a href="https://edu.gov.by/news/informatsionnaya-bezopasnost-detey-pamyatka-dlya-roditeley/" target="_blank"><i class="fas fa-shield-alt"></i> Памятка для родителей (Беларусь)</a></li>
+                    </ul>
+                `,
+                videoId: "UOtCCt-G-4Q",
+                icon: "fa-external-link-alt"
+            },
+            12: {
+                title: "Инструменты безопасности",
+                image: "https://cdn-icons-png.flaticon.com/512/1995/1995515.png",
+                content: `
+                    <p>Практические инструменты для проверки и повышения вашей безопасности:</p>
+                    <ul class="resources-list">
+                        <li><a href="https://haveibeenpwned.com/" target="_blank"><i class="fas fa-search"></i> Проверка утечек данных</a></li>
+                        <li><a href="https://2ip.ru/passcheck/" target="_blank"><i class="fas fa-key"></i> Проверка пароля на стойкость</a></li>
+                        <li><a href="https://www.virustotal.com/gui/" target="_blank"><i class="fas fa-virus"></i> Проверка файлов на вирусы</a></li>
+                    </ul>
+                `,
+                videoId: "UOtCCt-G-4Q",
+                icon: "fa-tools"
+            },
+            13: {
+                title: "Cyber Quiz Master",
+                image: "https://i.pinimg.com/736x/a9/9d/40/a99d400bbcb0edf79cd26e2ca610f180.jpg",
+                content: `
+                    <p>Попробуй свои силы в игре по мотивам данного мероприятия.</p>
+                    <p><a href="https://speet-fi.github.io/Cyber-Quiz-Master/" target="_blank" class="btn"><i class="fas fa-user-lock"></i> Начать игру</a></p>
+                    <div class="warning">
+                        <p class="danger">Внимание: </p>
+                        <p>Перед тем как начать играть, ознакомьтесь с содержанием воспитательного мероприятия.</p>
+                    </div>
+                `,
+                videoId: "x97Pa1qyJ0A",
+                icon: "fa-trophy"
+            }
+        };
+
+        // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
+        let currentCardId = null;
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContainer = document.getElementById('modalContainer');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const burgerMenu = document.getElementById('burgerMenu');
+        const navMenu = document.getElementById('navMenu');
+        const themeToggle = document.getElementById('themeToggle');
+        const progressBar = document.getElementById('progressBar');
+        const mainNav = document.getElementById('mainNav');
+        const welcomeModal = document.getElementById('welcomeModal');
+        const welcomeModalClose = document.getElementById('welcomeModalClose');
+        const startExploringBtn = document.getElementById('startExploringBtn');
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initWelcomeModal();
+            initModalCards();
+            initNavigation();
+            initTheme();
+            initProgressBar();
+            initScrollEffects();
+        });
+
+        // ========== МОДАЛЬНОЕ ОКНО ПРИВЕТСТВИЯ ==========
+        function initWelcomeModal() {
+            // Проверяем, показывали ли уже приветствие
+            const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+            
+            // Если не показывали - показываем через 500мс
+            if (!hasSeenWelcome) {
+                setTimeout(() => {
+                    welcomeModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }, 500);
+            }
+            
+            // Закрытие приветствия
+            welcomeModalClose.addEventListener('click', closeWelcomeModal);
+            startExploringBtn.addEventListener('click', closeWelcomeModal);
+            
+            // Закрытие при клике вне модалки
+            welcomeModal.addEventListener('click', function(e) {
+                if (e.target === welcomeModal) {
+                    closeWelcomeModal();
                 }
             });
-        });
+            
+            // Закрытие по ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && welcomeModal.classList.contains('active')) {
+                    closeWelcomeModal();
+                }
+            });
+        }
         
-        // Проверка ответов в викторине
+        function closeWelcomeModal() {
+            welcomeModal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Сохраняем в localStorage, что пользователь видел приветствие
+            localStorage.setItem('hasSeenWelcome', 'true');
+            
+            // Плавное появление контента сайта
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 300);
+        }
+
+        // ========== МОДАЛЬНЫЕ КАРТОЧКИ ==========
+        function initModalCards() {
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'A' || e.target.closest('a')) {
+                        return;
+                    }
+                    
+                    const cardId = parseInt(this.getAttribute('data-card-id'));
+                    if (cardId) {
+                        openModal(cardId);
+                    }
+                });
+            });
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', closeModal);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+
+        function openModal(cardId) {
+            const data = cardData[cardId];
+            if (!data) return;
+            
+            currentCardId = cardId;
+            document.body.classList.add('modal-open');
+            
+            modalTitle.innerHTML = `<i class="fas ${data.icon}"></i> ${data.title}`;
+            
+            let contentHTML = '';
+            
+            if (data.image) {
+                contentHTML += `<img src="${data.image}" alt="${data.title}" class="modal-image">`;
+            }
+            
+            contentHTML += data.content;
+            
+            if (data.videoId) {
+                contentHTML += `
+                    <div class="modal-video">
+                        <h4><i class="fas fa-video"></i> Видеоматериал по теме</h4>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/${data.videoId}" 
+                                    title="YouTube video player" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            contentHTML += createNavigationHTML(cardId);
+            modalContent.innerHTML = contentHTML;
+            
+            setTimeout(() => {
+                modalOverlay.classList.add('active');
+                modalContainer.classList.add('active');
+            }, 10);
+        }
+
+        function createNavigationHTML(currentId) {
+            const totalCards = Object.keys(cardData).length;
+            const prevId = currentId > 1 ? currentId - 1 : null;
+            const nextId = currentId < totalCards ? parseInt(currentId) + 1 : null;
+            
+            return `
+                <div class="modal-navigation">
+                    <button class="modal-nav-btn" onclick="navigateToCard(${prevId})" ${prevId ? '' : 'disabled'}>
+                        <i class="fas fa-arrow-left"></i> Предыдущая
+                    </button>
+                    <span>Карточка ${currentId} из ${totalCards}</span>
+                    <button class="modal-nav-btn" onclick="navigateToCard(${nextId})" ${nextId ? '' : 'disabled'}>
+                        Следующая <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function navigateToCard(cardId) {
+            if (cardId) {
+                closeModal();
+                setTimeout(() => {
+                    openModal(cardId);
+                }, 300);
+            }
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            modalContainer.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            
+            const iframe = modalContent.querySelector('iframe');
+            if (iframe) {
+                const tempSrc = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = tempSrc;
+                }, 100);
+            }
+        }
+
+        // ========== НАВИГАЦИЯ И БУРГЕР-МЕНЮ ==========
+        function initNavigation() {
+            // Бургер-меню
+            burgerMenu.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+            });
+
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    burgerMenu.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Закрытие меню при клике вне его
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !burgerMenu.contains(e.target) && navMenu.classList.contains('active')) {
+                    burgerMenu.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Плавная прокрутка
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // ========== ТЕМНАЯ/СВЕТЛАЯ ТЕМА ==========
+        function initTheme() {
+            // Проверяем сохраненную тему или системные настройки
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (systemPrefersDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            
+            // Обработчик переключателя
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+            
+            // Следим за изменением системных настроек
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                }
+            });
+        }
+
+        // ========== ПРОГРЕСС-ПОЛОСА ==========
+        function initProgressBar() {
+            function updateProgressBar() {
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight - windowHeight;
+                const scrolled = window.scrollY;
+                const progress = (scrolled / documentHeight) * 100;
+                
+                progressBar.style.height = `${progress}%`;
+            }
+            
+            window.addEventListener('scroll', updateProgressBar);
+            window.addEventListener('resize', updateProgressBar);
+            updateProgressBar();
+        }
+
+        // ========== ЭФФЕКТЫ ПРИ ПРОКРУТКЕ ==========
+        function initScrollEffects() {
+            // Подсветка активного раздела
+            function updateActiveSection() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('.nav-menu a');
+                
+                let currentSectionId = '';
+                const scrollPosition = window.scrollY + 100;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSectionId = '#' + section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === currentSectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            // Эффект навигации при прокрутке
+            function updateNavOnScroll() {
+                if (window.scrollY > 50) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+            }
+            
+            window.addEventListener('scroll', function() {
+                updateActiveSection();
+                updateNavOnScroll();
+            });
+            
+            updateActiveSection();
+            updateNavOnScroll();
+        }
+
+        // ========== ВИКТОРИНА ==========
         function checkAnswer(questionNum, selectedOption) {
             const correctAnswers = {
                 1: 'b)',
@@ -650,7 +1979,6 @@
             }
         }
         
-        // Показать все ответы
         function showAllAnswers() {
             const correctAnswers = {
                 1: 'b) Мошенническая техника для получения личных данных',
@@ -665,30 +1993,6 @@
                 resultElement.style.display = 'block';
             }
         }
-        
-        // Подсветка активного раздела в навигации при прокрутке
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav a');
-            
-            let currentSectionId = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.clientHeight;
-                if(window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-                    currentSectionId = '#' + section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.style.backgroundColor = '';
-                if(link.getAttribute('href') === currentSectionId) {
-                    link.style.backgroundColor = '#00bcd4';
-                }
-            });
-        });
     </script>
 </body>
 </html>
-
