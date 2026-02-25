@@ -9,7 +9,9 @@
         :root {
             /* Светлая тема (по умолчанию) */
             --primary-color: #1a237e;
+            --primary-color2: #1a237e;
             --secondary-color: #3949ab;
+            --third-color: #333333;
             --accent-color: #00bcd4;
             --danger-color: #f44336;
             --success-color: #4caf50;
@@ -33,7 +35,9 @@
         [data-theme="dark"] {
             /* Темная тема */
             --primary-color: #fff;
+            --primary-color2: #1e293b;
             --secondary-color: #1e293b;
+            --third-color: #999999;
             --accent-color: #00bcd4;
             --danger-color: #ef4444;
             --success-color: #10b981;
@@ -213,7 +217,7 @@
             bottom: -40px;
             left: 50%;
             transform: translateX(-50%) translateY(10px);
-            background-color: var(--primary-color);
+            background-color: var(--primary-color2);
             color: white;
             padding: 6px 12px;
             border-radius: 4px;
@@ -782,7 +786,7 @@
         }
         
         .resources-list li a {
-            color: var(--secondary-color);
+            color: var(--third-color);
             text-decoration: none;
             font-weight: 500;
             display: flex;
@@ -1335,39 +1339,6 @@
         </div>
     </section>
     
-    <section id="quiz" class="section">
-        <div class="container">
-            <h2 class="section-title">Проверьте свои знания</h2>
-            <div class="quiz-container">
-                <div class="quiz-question" id="question1">1. Что такое фишинг?</div>
-                <div class="quiz-options">
-                    <div class="quiz-option" onclick="checkAnswer(1, 'a)')">a) Вид рыбалки</div>
-                    <div class="quiz-option" onclick="checkAnswer(1, 'b)')">b) Мошенническая техника для получения личных данных</div>
-                    <div class="quiz-option" onclick="checkAnswer(1, 'c)')">c) Вид компьютерного вируса</div>
-                </div>
-                <div id="result1" class="quiz-result"></div>
-                
-                <div class="quiz-question" id="question2">2. Какой пароль является наиболее безопасным?</div>
-                <div class="quiz-options">
-                    <div class="quiz-option" onclick="checkAnswer(2, 'a)')">a) 123456</div>
-                    <div class="quiz-option" onclick="checkAnswer(2, 'b)')">b) password</div>
-                    <div class="quiz-option" onclick="checkAnswer(2, 'c)')">c) Xy8!pL2$qW9*</div>
-                </div>
-                <div id="result2" class="quiz-result"></div>
-                
-                <div class="quiz-question" id="question3">3. Что следует делать, если вы получили подозрительное письмо с просьбой перейти по ссылке?</div>
-                <div class="quiz-options">
-                    <div class="quiz-option" onclick="checkAnswer(3, 'a)')">a) Немедленно перейти по ссылке</div>
-                    <div class="quiz-option" onclick="checkAnswer(3, 'b)')">b) Удалить письмо, не переходя по ссылке</div>
-                    <div class="quiz-option" onclick="checkAnswer(3, 'c)')">c) Переслать письмо друзьям</div>
-                </div>
-                <div id="result3" class="quiz-result"></div>
-                
-                <button class="btn" onclick="showAllAnswers()" style="margin-top: 20px;">Показать все ответы</button>
-            </div>
-        </div>
-    </section>
-    
     <section id="resources" class="section">
         <div class="container">
             <h2 class="section-title">Полезные ресурсы</h2>
@@ -1412,11 +1383,11 @@
                 <div class="card" data-card-id="13">
                     <div class="card-clickable">
                         <div class="card-tooltip">Нажмите для подробностей и видео</div>
-                        <img src="https://i.pinimg.com/736x/a9/9d/40/a99d400bbcb0edf79cd26e2ca610f180.jpg" alt="Игра" class="card-img">
+                        <img src="https://i.pinimg.com/736x/63/84/37/638437c7e678c5913a0ebc6199a9401e.jpg" alt="Игра" class="card-img">
                         <div class="card-content">
-                            <h3>Cyber Quiz Master <i class="fas fa-external-link-alt card-icon"></i></h3>
+                            <h3>Кибер Викторина <i class="fas fa-external-link-alt card-icon"></i></h3>
                             <p>Попробуй свои силы в игре по мотивам данного мероприятия.</p>
-                            <li><a href="https://speet-fi.github.io/Cyber-Quiz-Master/" target="_blank"><i class="fas fa-user-lock"></i> Начать игру</a></li>
+                            <a href="https://speet-fi.github.io/Cyber-Quiz-Master/" target="_blank" class="btn"><i class="fas fa-trophy"></i> Начать игру</a></p>
                             <div class="warning">
                                 <p class="danger">Внимание: </p>
                                 <p>Перед тем как начать играть, ознакомьтесь с содержанием воспитательного мероприятия.</p>
@@ -1450,7 +1421,7 @@
             
             <div class="copyright">
                 <p>2025 Воспитательное мероприятие по кибербезопасности. Все права защищены.</p>
-                <p>&copy;LIQALRT86</p>
+                <p>&copy;UNDARTAKER86</p>
             </div>
         </div>
     </footer>
@@ -1550,7 +1521,6 @@
             },
             7: {
                 title: "Правила создания надежных паролей",
-                image: "https://cdn-icons-png.flaticon.com/512/3067/3067256.png",
                 content: `
                     <ul>
                         <li>Используйте не менее 12 символов</li>
@@ -1565,7 +1535,6 @@
             },
             8: {
                 title: "Чего следует избегать",
-                image: "https://cdn-icons-png.flaticon.com/512/1828/1828843.png",
                 content: `
                     <ul>
                         <li>Простых последовательностей (123456, qwerty)</li>
@@ -1600,7 +1569,6 @@
             },
             11: {
                 title: "Дополнительные материалы",
-                image: "https://cdn-icons-png.flaticon.com/512/2092/2092655.png",
                 content: `
                     <p>Полезные ресурсы для углубленного изучения кибербезопасности:</p>
                     <ul class="resources-list">
@@ -1609,12 +1577,11 @@
                         <li><a href="https://edu.gov.by/news/informatsionnaya-bezopasnost-detey-pamyatka-dlya-roditeley/" target="_blank"><i class="fas fa-shield-alt"></i> Памятка для родителей (Беларусь)</a></li>
                     </ul>
                 `,
-                videoId: "UOtCCt-G-4Q",
+                videoId: "",
                 icon: "fa-external-link-alt"
             },
             12: {
                 title: "Инструменты безопасности",
-                image: "https://cdn-icons-png.flaticon.com/512/1995/1995515.png",
                 content: `
                     <p>Практические инструменты для проверки и повышения вашей безопасности:</p>
                     <ul class="resources-list">
@@ -1623,12 +1590,12 @@
                         <li><a href="https://www.virustotal.com/gui/" target="_blank"><i class="fas fa-virus"></i> Проверка файлов на вирусы</a></li>
                     </ul>
                 `,
-                videoId: "UOtCCt-G-4Q",
+                videoId: "",
                 icon: "fa-tools"
             },
             13: {
-                title: "Cyber Quiz Master",
-                image: "https://i.pinimg.com/736x/a9/9d/40/a99d400bbcb0edf79cd26e2ca610f180.jpg",
+                title: "Кибер Викторина",
+                image: "https://i.pinimg.com/736x/63/84/37/638437c7e678c5913a0ebc6199a9401e.jpg",
                 content: `
                     <p>Попробуй свои силы в игре по мотивам данного мероприятия.</p>
                     <p><a href="https://speet-fi.github.io/Cyber-Quiz-Master/" target="_blank" class="btn"><i class="fas fa-user-lock"></i> Начать игру</a></p>
@@ -1637,7 +1604,7 @@
                         <p>Перед тем как начать играть, ознакомьтесь с содержанием воспитательного мероприятия.</p>
                     </div>
                 `,
-                videoId: "x97Pa1qyJ0A",
+                videoId: "",
                 icon: "fa-trophy"
             }
         };
